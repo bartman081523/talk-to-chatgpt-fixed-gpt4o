@@ -1037,55 +1037,55 @@ function CN_KeepSpeechRecWorking() {
 // Function definitions for different button actions
 const buttonActions = {
 	settings: CN_OnSettingsIconClick,
-	micon: function() { toggleMicrophone(this, 'micoff', true); },
-	micoff: function() { toggleMicrophone(this, 'micon', false); },
-	speakon: function() { toggleSpeaking(this, 'speakoff', true); },
-	speakoff: function() { toggleSpeaking(this, 'speakon', false); },
-	skip: skipMessage
-  };
-  
+  micon: function() { toggleMicrophone(this, 'micoff', true); },
+  micoff: function() { toggleMicrophone(this, 'micon', false); },
+  speakon: function() { toggleSpeaking(this, 'speakoff', true); },
+  speakoff: function() { toggleSpeaking(this, 'speakon', false); },
+  skip: skipMessage
+};
+
   // Toggle button clicks: settings, pause, skip...
   function CN_ToggleButtonClick() {
-	const action = $(this).data("cn");
-	const handler = buttonActions[action];
-	if (handler) handler.call(this);
+    const action = $(this).data("cn");
+    const handler = buttonActions[action];
+    if (handler) handler.call(this);
   }
   
   function toggleMicrophone(element, targetIcon, isDisabled) {
-	$(element).css("display", "none");
-	$(`.CNToggle[data-cn=${targetIcon}]`).css("display", "");
-  
-	CN_SPEECHREC_DISABLED = isDisabled;
-  
-	if (CN_SPEECHREC && CN_IS_LISTENING) {
-	  CN_SPEECHREC.stop();
-	}
-  
-	if (!isDisabled && CN_SPEECHREC && !CN_IS_LISTENING && !CN_IS_READING) {
-	  try {
-		CN_SPEECHREC.start();
-	  } catch (e) {
-		// Handle error, if needed
-	  }
-	}
+    $(element).css("display", "none");
+    $(`.CNToggle[data-cn=${targetIcon}]`).css("display", "");
+
+    CN_SPEECHREC_DISABLED = isDisabled;
+
+    if (CN_SPEECHREC && CN_IS_LISTENING) {
+      CN_SPEECHREC.stop();
+    }
+
+    if (!isDisabled && CN_SPEECHREC && !CN_IS_LISTENING && !CN_IS_READING) {
+      try {
+        CN_SPEECHREC.start();
+      } catch (e) {
+        // Handle error, if needed
+      }
+    }
   }
   
   function toggleSpeaking(element, targetIcon, isDisabled) {
-	$(element).css("display", "none");
-	$(`.CNToggle[data-cn=${targetIcon}]`).css("display", "");
-  
-	CN_SPEAKING_DISABLED = isDisabled;
-	clearAndStopReading();
+    $(element).css("display", "none");
+    $(`.CNToggle[data-cn=${targetIcon}]`).css("display", "");
+
+    CN_SPEAKING_DISABLED = isDisabled;
+    clearAndStopReading();
   }
   
   function skipMessage() {
-	clearAndStopReading();
-  
-	if (!CN_SPEECHREC_DISABLED) {
-	  setTimeout(() => {
-		CN_AfterSpeakOutLoudFinished();
-	  }, 100);
-	}
+    clearAndStopReading();
+
+    if (!CN_SPEECHREC_DISABLED) {
+      setTimeout(() => {
+        CN_AfterSpeakOutLoudFinished();
+      }, 100);
+    }
   }
   
   function clearAndStopReading() {
@@ -1134,7 +1134,10 @@ function setNativeValue(element, value) {
 
 // The main function that sets the textarea value and triggers an input event
 function CN_SetTextareaValue(text) {
-  setNativeValue(textarea, text);
+  // Find the textarea element and set its value
+  const textarea = document.getElementById("prompt-textarea"); // Assuming the textarea has the id "prompt-textarea"
+  textarea.value = text;
+  // Trigger the input event
   textarea.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
